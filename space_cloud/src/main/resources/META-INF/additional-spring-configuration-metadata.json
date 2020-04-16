@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "admin.invitationCode",
+      "type": "java.lang.String",
+      "description": "Description for admin.invitationCode."
+  }
+] }

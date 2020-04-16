@@ -1,0 +1,73 @@
+{
+  "name" : "TUserBusiness",
+  "comment" : null,
+  "fullColumn" : [ {
+    "name" : "id",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "orderId",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "buyType",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "buyMoney",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "remark",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "buyDate",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "userId",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "userOrder",
+    "comment" : " userOrder的实例",
+    "type" : "cn.nuaa.entity.UserOrder",
+    "shortType" : null,
+    "custom" : true,
+    "ext" : { }
+  }, {
+    "name" : "user",
+    "comment" : "user的实例",
+    "type" : "cn.nuaa.entity.User",
+    "shortType" : null,
+    "custom" : true,
+    "ext" : { }
+  } ],
+  "pkColumn" : null,
+  "otherColumn" : null,
+  "savePackageName" : "cn.nuaa",
+  "savePath" : "./space_cloud/src/main/java/cn/nuaa",
+  "saveModelName" : "space_cloud"
+}

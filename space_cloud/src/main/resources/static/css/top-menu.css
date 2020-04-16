@@ -1,0 +1,524 @@
+@charset "UTF-8";
+/*顶部菜单*/
+#header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    max-width: 100%;
+    min-width: 1200px;
+}
+
+#header #index-menu {
+    height: 61px;
+    background-color: #22252A;
+    border-bottom: 1px solid #444;
+}
+
+#header #index-menu .logo {
+    position: relative;
+    float: left;
+    width: 96px;
+    height: 60px;
+    margin-right: 64px;
+    cursor: pointer;
+    display: block;
+}
+
+#header #index-menu .logo img {
+    position: absolute;
+    top:5px;
+    width: 140px;
+    height: 53px;
+}
+
+#header #index-menu .menu {
+    position: relative;
+    float: left;
+}
+
+#header #index-menu .menu ul li {
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    cursor: pointer;
+}
+
+#header #index-menu .menu ul li:nth-of-type(2) {
+    cursor: auto;
+}
+
+#header #index-menu .menu ul li:nth-of-type(2) a {
+    cursor: default;
+}
+
+#header #index-menu .menu ul li:last-of-type {
+    cursor: auto;
+}
+
+#header #index-menu .menu ul li:last-of-type a {
+    cursor: default;
+}
+
+#header #index-menu .menu ul li a {
+    font-size: 14px;
+    padding: 0 16px;
+    color: #fff;
+}
+
+#header #index-menu .menu ul div.line {
+    position: absolute;
+    z-index: 1;
+    bottom: -1px;
+    height: 3px;
+    background-color: #00C1DE;
+    transition: all .3s cubic-bezier(.4, 0, .2, 1);
+    -webkit-transition: all .3s cubic-bezier(.4, 0, .2, 1);
+    -moz-transition: all .3s cubic-bezier(.4, 0, .2, 1);
+    -ms-transition: all .3s cubic-bezier(.4, 0, .2, 1);
+    -o-transition: all .3s cubic-bezier(.4, 0, .2, 1);
+}
+
+#header #index-menu .tool {
+    float: right;
+}
+
+#header #index-menu .tool .register {
+    float: right;
+    width: 130px;
+    height: 61px;
+    cursor: pointer;
+    background-color: #00c1de;
+    text-align: center;
+    color: #fff;
+    line-height: 60px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    -webkit-transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+    -ms-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
+}
+
+#header #index-menu .tool .register a {
+    color: #fff;
+}
+
+#header #index-menu .tool .register:hover {
+    background-color: #28d0e9;
+}
+
+#header #index-menu .tool ul {
+    float: right;
+}
+
+#header #index-menu .tool ul li {
+    margin-right: 22px;
+    float: right;
+    text-align: left;
+    height: 60px;
+    line-height: 60px;
+}
+
+#header #index-menu .tool ul li a {
+    color: #fff;
+    font-size: 14px;
+    transition: color .2s;
+    -webkit-transition: color .2s;
+    -moz-transition: color .2s;
+    -ms-transition: color .2s;
+    -o-transition: color .2s;
+}
+
+#header #index-menu .tool ul li a:hover {
+    color: #00c1de;
+}
+
+/*菜单下拉栏*/
+#header #dropdown-ing .dropdown-box {
+    z-index: 1000;
+    position: relative;
+    width: 100%;
+    height: 0px;
+    background-color: #272C30;
+    background-color: rgba(39, 44, 48, .98);
+    overflow: hidden;
+    transition: height .2s cubic-bezier(0, 0, .2, 1) .2s;
+    -webkit-transition: height .2s cubic-bezier(0, 0, .2, 1) .2s;
+    -moz-transition: height .2s cubic-bezier(0, 0, .2, 1) .2s;
+    -ms-transition: height .2s cubic-bezier(0, 0, .2, 1) .2s;
+    -o-transition: height .2s cubic-bezier(0, 0, .2, 1) .2s;
+}
+
+#header #dropdown-ing .show {
+    height: 499px;
+    transition: height .2s cubic-bezier(.4, 0, 1, 1);
+    -webkit-transition: height .2s cubic-bezier(.4, 0, 1, 1);
+    -moz-transition: height .2s cubic-bezier(.4, 0, 1, 1);
+    -ms-transition: height .2s cubic-bezier(.4, 0, 1, 1);
+    -o-transition: height .2s cubic-bezier(.4, 0, 1, 1);
+}
+
+/* 上拉按钮 */
+#header #dropdown-ing .dropdown-box .close-dropdown {
+    opacity: 1;
+    cursor: pointer;
+    font-style: normal;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    z-index: 1000;
+}
+
+#header #dropdown-ing .dropdown-box .close-dropdown img {
+    width: 22px;
+}
+
+/*下拉菜单*/
+#header #dropdown-ing .dropdown-box .menu-boxs {
+    position: relative;
+    padding-top: 20px;
+    padding-bottom: 80px;
+}
+
+/*产品一级导航*/
+#header #dropdown-ing .dropdown-box .menu-boxs .level-1 {
+    width: 210px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .ul-move {
+    height: 440px;
+    border-right: 1px solid #656565;
+    position: relative;
+    display: inline-block;
+    float: left;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .ul-move li {
+    position: relative;
+    width: 210px;
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+    font-size: 16px;
+    color: #fff;
+    z-index: 2;
+    box-sizing: border-box;
+    padding-left: 20px;
+    cursor: default;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .ul-move li.line {
+    position: absolute;
+    background-color: #00c1de;
+    z-index: 1;
+    transition: top .15s cubic-bezier(.4, 0, .2, 1);
+    -webkit-transition: top .15s cubic-bezier(.4, 0, .2, 1);
+    -moz-transition: top .15s cubic-bezier(.4, 0, .2, 1);
+    -ms-transition: top .15s cubic-bezier(.4, 0, .2, 1);
+    -o-transition: top .15s cubic-bezier(.4, 0, .2, 1);
+}
+
+/*产品二级导航*/
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-level2 {
+    padding-left: 30px;
+    display: inline-block;
+}
+
+#header #dropdown-ing .dropdown-box .ul-move.level-2 {
+    width: 160px;
+    height: 440px;
+}
+
+#header #dropdown-ing .dropdown-box .ul-move {
+    border-right: 1px solid #656565;
+    position: relative;
+    display: inline-block;
+    float: left;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-level2 > ul > li {
+    display: inline-block;
+    float: left;
+}
+
+#header #dropdown-ing .dropdown-box .ul-move.level-2 li {
+    width: 160px;
+    font-size: 14px;
+}
+
+#header #dropdown-ing .dropdown-box .ul-move li {
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+    color: #fff;
+    z-index: 1;
+    padding-left: 20px;
+    cursor: default;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-level2 h1 {
+    font-size: 18px;
+    color: #848688;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    cursor: default;
+    font-weight: 500;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-level2 h1 a {
+    color: #fff;
+    display: block;
+    font-size: 18px;
+    transition: color .3s;
+    -webkit-transition: color .3s;
+    -moz-transition: color .3s;
+    -ms-transition: color .3s;
+    -o-transition: color .3s;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-level2 h1 a:hover {
+    color: #00c1de;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-level2 > ul > li > ul > li {
+    margin: 0 20px 10px 0;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-level2 > ul > li > ul > li a {
+    display: inline-block;
+    width: 270px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: left;
+    box-sizing: border-box;
+    padding-left: 20px;
+    background-color: #4f5356;
+    color: #fff;
+    transition: background-color .2s;
+    -webkit-transition: background-color .2s;
+    -moz-transition: background-color .2s;
+    -ms-transition: background-color .2s;
+    -o-transition: background-color .2s;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-level2 > ul > li > ul > li a:hover {
+    background-color: #00c1de;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl2 > li > ul > li a {
+    width: 180px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl2 > li > ul > li a:hover {
+    background-color: #00c1de;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl3 > li > ul > li a {
+    width: 270px
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl3 > li > ul > li a:hover {
+    background-color: #00c1de;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl4 > li {
+    margin-right: 30px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl4 > li > ul {
+    width: 270px;
+    margin-bottom: 10px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl4 > li > ul > li.half.even {
+    margin-right: 10px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl4 > li > ul > li.half {
+    width: 130px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl4 > li > ul > li {
+    margin: 0 0 10px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl4 > li > ul > li.half a {
+    width: 130px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl4 > li > ul > li a {
+    width: 270px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl4 > li > ul > li a:hover {
+    background-color: #00c1de;
+}
+
+/*产品三级导航*/
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-detail {
+    height: 400px;
+    display: inline-block;
+    width: 700px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-detail .tpll {
+    padding-left: 30px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-detail .tpll li {
+    display: inline-block;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-detail .tpll a {
+    display: inline-block;
+    width: 320px;
+    height: 60px;
+    margin: 0 10px 10px 0;
+    background-color: #4f5356;
+    transition: background-color .2s;
+    -webkit-transition: background-color .2s;
+    -moz-transition: background-color .2s;
+    -ms-transition: background-color .2s;
+    -o-transition: background-color .2s;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-detail .tpll a:hover {
+    background-color: #00c1de;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-detail .tpll a:hover p {
+    color: #fff;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-detail .tpll a h3 {
+    margin: 7px 0 0 21px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-detail .tpll a p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 5px 21px 0;
+    color: #777f84;
+    font-size: 12px;
+}
+
+/*解决方案一级导航*/
+#header #dropdown-ing .dropdown-box .menu-boxs .cell-level2.clear-left {
+    padding-left: 0;
+}
+
+#header #dropdown-ing .dropdown-box .ul-move.level-2 {
+    width: 160px;
+    height: 440px;
+}
+
+#header #dropdown-ing .dropdown-box .ul-move {
+    border-right: 1px solid #656565;
+    position: relative;
+    display: inline-block;
+    float: left;
+}
+
+#header #dropdown-ing .dropdown-box .ul-move.level-2 > ul > li {
+    display: inline-block;
+    float: left;
+}
+
+#header #dropdown-ing .dropdown-box .ul-move.level-2 li {
+    width: 160px;
+    font-size: 14px;
+}
+
+/*解决方案二级导航*/
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 {
+    padding-left: 30px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li {
+    position: relative;
+    display: inline-block;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li:hover a {
+    background: #00c1de;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li:hover a p {
+    color: #fff;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li > a {
+    display: inline-block;
+    width: 320px;
+    height: 60px;
+    margin: 0 10px 10px 0;
+    background-color: #4f5356;
+    transition: background-color .2s;
+    -webkit-transition: background-color .2s;
+    -ms-transition: background-color .2s;
+    -moz-transition: background-color .2s;
+    -o-transition: background-color .2s;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li > a h3 {
+    margin: 7px 0 0 21px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li > a p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 8px 21px 0;
+    color: #777f84;
+    font-size: 12px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li .sub {
+    opacity: 0;
+    bottom: 10px;
+    width: 320px;
+    position: absolute;
+    transition: opacity .2s;
+    -webkit-transition: opacity .2s;
+    -moz-transition: opacity .2s;
+    -ms-transition: opacity .2s;
+    -o-transition: opacity .2s;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li:hover .sub {
+    opacity: 1;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li .sub ul {
+    margin-top: -20px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li .sub ul > li {
+    float: left;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li .sub ul > li a {
+    line-height: 24px;
+    color: #fff;
+    background-color: #00b7d3;
+    text-align: center;
+    height: 24px;
+    display: block;
+    margin: 0;
+    font-size: 12px;
+}
+
+#header #dropdown-ing .dropdown-box .menu-boxs ul.tpl6 > li .sub ul > li a:hover {
+    background-color: #33cde5
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nuaa.dao.UserBusinessDao">
+
+    <resultMap type="cn.nuaa.entity.UserBusiness" id="UserBusinessMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="buyType" column="buy_type" jdbcType="VARCHAR"/>
+        <result property="buyMoney" column="buy_money" jdbcType="NUMERIC"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="buyDate" column="buy_date" jdbcType="TIMESTAMP"/>
+        <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+        <association property="productType" javaType="cn.nuaa.entity.ProductType" column="product_type_id">
+            <id property="id" column="pt.id"/>
+            <result property="name" column="pt.name"/>
+        </association>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserBusinessMap">
+        select
+          ub.id, ub.order_id, ub.buy_type, ub.buy_money, ub.remark, ub.buy_date, ub.user_account,
+          pt.id 'pt.id',pt.name 'pt.name'
+        from t_user_business ub
+        LEFT JOIN t_product_type pt ON ub.product_type_id=pt.id
+        where ub.id = #{id}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserBusinessMap">
+        select
+        ub.id, ub.order_id, ub.buy_type, ub.buy_money, ub.remark, ub.buy_date, ub.user_account,
+        pt.id 'pt.id',pt.name 'pt.name'
+        from t_user_business ub
+        LEFT JOIN t_product_type pt ON ub.product_type_id=pt.id
+        <where>
+            <if test="userAccount != null and userAccount != ''">
+                and ub.user_account = #{userAccount}
+            </if>
+            <if test="buyType != null and buyType != ''">
+                and ub.buy_type = #{buyType}
+            </if>
+        </where>
+        ORDER BY ub.buy_date DESC
+    </select>
+
+</mapper>

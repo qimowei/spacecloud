@@ -1,0 +1,98 @@
+{
+  "name" : "TUserOrder",
+  "comment" : null,
+  "fullColumn" : [ {
+    "name" : "id",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "orderStatus",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "productTypeId",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "productSystemId",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "orderDate",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "orderPrice",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "orderTerm",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "remark",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "userId",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "productType",
+    "comment" : "productType的实例",
+    "type" : "cn.nuaa.entity.ProductType",
+    "shortType" : null,
+    "custom" : true,
+    "ext" : { }
+  }, {
+    "name" : "productSystem",
+    "comment" : "productSystem的实例",
+    "type" : "cn.nuaa.entity.ProductSystem",
+    "shortType" : null,
+    "custom" : true,
+    "ext" : {
+      "disable" : false
+    }
+  }, {
+    "name" : "user",
+    "comment" : "user的实例",
+    "type" : "cn.nuaa.entity.User",
+    "shortType" : null,
+    "custom" : true,
+    "ext" : {
+      "disable" : false
+    }
+  } ],
+  "pkColumn" : null,
+  "otherColumn" : null,
+  "savePackageName" : "cn.nuaa",
+  "savePath" : "./space_cloud/src/main/java/cn/nuaa",
+  "saveModelName" : "space_cloud"
+}

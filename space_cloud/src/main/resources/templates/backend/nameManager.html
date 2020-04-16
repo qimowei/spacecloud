@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>商品分类</title>
+    <script src="/js/common/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" media="all">
+    <script src="https://www.layuicdn.com/layui-v2.5.6/layui.js" charset="utf-8"></script>
+    <!-- 公共的js start-->
+    <script th:inline="none">
+        $(function () {
+
+        });
+
+        //网易云音乐的显示
+        function wyyshow() {
+            layui.layer.prompt(function (val, index) {
+                //验证输入的值是否为数字
+                if (isNaN(val)) {
+                    layui.layer.msg('id只能为数字')
+                } else {
+                    layui.layer.msg('你输入的id为:' + val);
+                    layui.layer.close(index);
+                    $('#wyyshow').attr('src', 'http://music.163.com/outchain/player?type=0&id=' + val);
+                }
+            });
+        }
+    </script>
+    <!-- 公共的js end-->
+</head>
+<body>
+<div class="layui-layout-body" style="margin-left: 20px">
+    <div class="layui-layout layui-layout-admin">
+        <br>
+        <!-- header start-->
+        <div class="layui-main site-inline">
+            <div class="site-content">
+                <blockquote class="layui-elem-quote" style="background-color: #FFFFFF">
+                    <h1 class="site-h1">名称管理 <br>
+                        <p></p></h1>
+                </blockquote>
+            </div>
+        </div>
+        <!-- header end-->
+        <!-- 内容主体区域 -->
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">商品名称</li>
+                <li>商品分类</li>
+                <li>网易云音乐</li>
+                <li>网易云音乐</li>
+            </ul>
+
+            <!--tab 标签 start-->
+            <div class="layui-tab-content">
+                <!-- 商品名称productType start-->
+                <div class="layui-tab-item layui-show">
+                    <button type="button" class="layui-btn" onclick="addProductTypeShow()" style="float: left">
+                        <i class="layui-icon">&#xe608;</i> 添加商品名称
+                    </button>
+                    <!-- 商品名称搜索框 start-->
+                    <form class="layui-form">
+                        <div class="layui-inline">
+                            <input class="layui-input" name="name" id="searchByName" autocomplete="off"
+                                   placeholder="输入名称搜索">
+                        </div>
+                        <button class="layui-btn" lay-submit lay-filter="searchProductType_form">搜索名称</button>
+                    </form>
+                    <!-- 商品名称搜索框 end-->
+
+                    <!-- 表格 start-->
+                    <table id="productType_tb" lay-filter="productType_tb_filter"></table>
+                    <!-- 表格 end-->
+                </div>
+                <!-- 商品名称productType end-->
+
+                <!-- 商品分类sort start-->
+                <div class="layui-tab-item">
+                    <button type="button" class="layui-btn" onclick="addSortShow()">
+                        <i class="layui-icon">&#xe608;</i> 添加商品分类
+                    </button>
+                    <br>
+                    <table id="sort_tb" lay-filter="sort_tb_filter"></table>
+                </div>
+                <!-- 商品分类sort end-->
+
+                <!-- 网易云音乐 start-->
+                <div class="layui-tab-item">
+                    <iframe frameborder="no" border="0"
+                            style="width: 100%; height:480px; left: -10px; top: -10px; right: -10px;"
+                            src="https://music.163.com/outchain/player?type=0&height=241&id=457068733"></iframe>
+                </div>
+                <!-- 网易云音乐 end-->
+
+                <!-- 网易云音乐 start-->
+                <div class="layui-tab-item">
+                    <button class="layui-btn" id="wyy-show" onclick="wyyshow()">点击输入网易云id</button>
+                    <iframe id="wyyshow" frameborder="no" border="0"
+                            style="width: 100%; height:450px; left: -10px; top: -10px; right: -10px;"
+                            src="https://music.163.com/outchain/player?type=0&height=241&id=457068733"></iframe>
+                </div>
+                <!-- 网易云音乐 end-->
+            </div>
+            <!--tab 标签 end-->
+        </div>
+    </div>
+</div>
+
+<!-- 添加商品名称弹出框内表单内容 start-->
+<div id="addProductType_form" style="display: none;margin: 30px 50px 0px 10px">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" placeholder="请输入" class="layui-input" lay-verify="required|name">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属分类</label>
+            <div class="layui-input-block">
+                <select name="sort_id" id="sort_select" lay-filter="sort_select" lay-verify="required">
+                    <option selected></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: -20px">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addProductType_form">立即添加</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 添加商品名称弹出框内表单内容 end-->
+
+<!-- 修改商品名称弹出框内表单内容 start-->
+<div id="modifyProductType_form" style="display: none;margin: 30px 50px 0px 10px">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_name" name="name" placeholder="请输入" class="layui-input"
+                       lay-verify="required|name">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属分类</label>
+            <div class="layui-input-block">
+                <select name="sort_id" id="sort_select_modifyForm" lay-filter="sort_select_modifyFormFilter" lay-verify="required">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: -20px">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="modifyProductType_form">立即修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 修改商品名称弹出框内表单内容 end-->
+
+<!-- 添加商品分类弹出框内表单内容 start-->
+<div id="addSort_form" style="display: none;margin: 30px 50px 0px 10px">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" placeholder="请输入" class="layui-input" lay-verify="required|name">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: -20px">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addSort_form">立即添加</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 添加商品分类弹出框内表单内容 end-->
+
+<!-- 修改商品分类弹出框内表单内容 start-->
+<div id="modifySort_form" style="display: none;margin: 30px 50px 0px 10px">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifySortForm_name" name="name" placeholder="请输入" class="layui-input"
+                       lay-verify="required|name">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: -20px">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="modifySort_form">立即修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 修改商品分类弹出框内表单内容 end-->
+</body>
+
+<!-- 商品名称productType的Tab start-->
+<script th:inline="none">
+    //JavaScript代码区域
+    layui.use(['layer', 'form', 'element', 'table'], function () {
+        var layer = layui.layer;//获取layer模块
+        var element = layui.element;//获取element模块
+        var form = layui.form; //获取form模块
+        var table = layui.table;//获取table模块
+
+        //商品名称productType表
+        table.render({
+            elem: '#productType_tb'
+            , height: 350
+            , cellMinWidth: 20 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , url: 'http://127.0.0.1:8080/backend/productType/findAll'  //数据接口
+            , title: '商品名称表'
+            , page: true //启用分页
+            , limit: 5 //限制每一页的行数
+            , limits: [5, 10, 15] //表示每一页可显示的行数
+            // , toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            , toolbar: '#productType_tb_topBar'
+            , defaultToolbar: ['filter', 'print', 'exports']
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID', width: 100, sort: true, align: 'center'}
+                , {field: 'name', title: '商品名称', align: 'center'}
+                , {
+                    field: 'status', title: '启用/禁用', align: 'center',
+                    templet: function (res) {
+                        var status = res.status == 1 ? '启用' : '禁用';
+                        return '<span>' + status + '</span>'
+                    }
+                }
+                , {
+                    field: 'sort', title: '所属分类', align: 'center',
+                    templet: function (res) {
+                        return '<span>' + res.sort.name + '</span>'
+                    }
+                }
+                , {fixed: 'right', title: '操作', width: 400, align: 'center', toolbar: '#productType_tb_rowBar'}
+            ]]
+        });
+
+        //搜索后重载productType_tb表格
+        form.on('submit(searchProductType_form)', function (data) {
+            console.log(data);
+            table.reload('productType_tb', {
+                page: {
+                    curr: 1 //重新回到第一页
+                }
+                , where: {//设定异步数据接口的额外参数
+                    name: data.field.name
+                }
+            });
+            return false;
+        });
+
+        //商品名称表头批量删除、修改状态监听
+        table.on('toolbar(productType_tb_filter)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id)
+                , data = checkStatus.data //获取选中的数据
+                , ids = ''//定义一个元素存在循环出的id的值
+                , names = '';//定义一个数组存放name的值
+            switch (obj.event) {
+                //批量删除
+                case 'batch_del':
+                    if (data.length === 0) {
+                        layer.msg('请至少选择一行');
+                    } else {
+                        for (var i = 0; i < data.length; i++) {
+                            ids += data[i].id + ",";
+                        }
+                        // $.each(data, function (index, value) {
+                        //     names=value.name;
+                        // })
+                        layer.confirm('确定删除这些吗？', function (index) {
+                            parent.layer.msg('删除中...', {icon: 16, shade: 0.3}, function () {
+                                $.post(
+                                    '/backend/productType/batchRem',
+                                    {'ids': ids},
+                                    function (data) {
+                                        layer.closeAll('loading');
+                                        if (data.code == 0) {
+                                            parent.layer.msg('删除成功！', {time: 2000, shade: 0.2}, function () {
+                                                location.reload(true);
+                                            });
+                                        } else {
+                                            parent.layer.msg('删除失败！', {icon: 2, time: 3000, shade: 0.2});
+                                        }
+                                    }
+                                );
+                            });
+                        });
+                    }
+                    break;
+                //批量更改状态
+                case 'batch_status':
+                    if (data.length === 0) {
+                        layer.msg('请至少选择一行');
+                    } else {
+                        for (var i = 0; i < data.length; i++) {
+                            ids += data[i].id + ",";
+                        }
+                        layer.confirm('确定修改这些吗？', function (index) {
+                            parent.layer.msg('修改中...', {icon: 16, shade: 0.3, time: 2000}, function () {
+                                $.post(
+                                    '/backend/productType/batchStatus',
+                                    {'ids': ids},
+                                    function (data) {
+                                        layer.closeAll('loading');
+                                        if (data.code == 0) {
+                                            parent.layer.msg('修改成功！', {time: 2000, shade: 0.2}, function () {
+                                                location.reload(true);
+                                            });
+                                        } else {
+                                            parent.layer.msg('修改失败！', {icon: 2, time: 3000, shade: 0.2});
+                                        }
+                                    }
+                                );
+                            });
+                        });
+                    }
+                    break;
+            }
+            ;
+        });
+
+        //商品名称表行监听,删除修改，启用/禁用
+        table.on('tool(productType_tb_filter)', function (obj) {
+            var data = obj.data; //获取当前行数据
+            var ptevent = obj.event;//获取lay-event对应的值
+            switch (ptevent) {
+                //删除按钮
+                case 'del':
+                    layer.confirm('确定删除吗？', function (index) {
+                        layer.close(index);
+                        // 向服务端发送删除指令
+                        $.get(
+                            '/backend/productType/remove',
+                            {id: data.id},
+                            function (res) {
+                                if (res.code == 0) {
+                                    obj.del(); //删除对应行（tr）的DOM结构
+                                    layer.msg('删除成功', {time: 2000});
+                                } else {
+                                    layer.msg('删除失败', {time: 2000});
+                                }
+                            }
+                        );
+                    });
+                    break;
+                //修改按钮
+                case 'modify':
+                    //弹出窗口
+                    layer.open({
+                        id: 'modifyProductType'
+                        , type: 1 //Page层类型 1为string，2为frame，content可以填写url
+                        , area: ['400px', '250px']
+                        , title: '修改商品信息'
+                        , shade: 0.6 //遮罩透明度
+                        , maxmin: true //允许全屏最小化
+                        , anim: 0 //0-6的动画形式，-1不开启
+                        , content: $('#modifyProductType_form')
+                        , success: function () {
+                            $.post(
+                                '/backend/productType/findById',
+                                {'id': data.id},
+                                function (res) {
+                                    if (res.code == 0) {
+                                        $('#modifyForm_name').val(res.data.name);
+                                        $('#sort_select_modifyForm').val(res.data.sort.id);
+                                        form.render('select');
+                                    }
+                                }
+                            );
+                        }
+                    });
+                    break;
+                //启用禁用按钮
+                case 'open':
+                case 'forbidden':
+                    $.get(
+                        '/backend/productType/modifyStatus',
+                        {id: data.id},
+                        function (res) {
+                            if (res.code == 0) {
+                                location.reload();
+                            } else {
+                                layer.msg('修改状态失败');
+                            }
+                        }
+                    );
+                    break;
+            }
+            //提交modifyProductType_form表单
+            form.on('submit(modifyProductType_form)', function (datas) {
+                $.get(
+                    '/backend/productType/modify',
+                    {id: data.id, name: datas.field.name, sort_id: datas.field.sort_id},
+                    function (res) {
+                        if (res.code == 0) {
+                            layer.msg('修改商品成功', {time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                );
+                return false;
+            });
+        })
+
+        //form表单验证
+        form.verify({
+            name: [
+                /^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$/,
+                '商品名称不能有特殊字符'
+            ]
+        });
+
+        //显示添加商品名称弹出框界面的分类选项动态生成
+        $.get(
+            '/backend/sort/findAll',
+            function (result) {
+                var data = result.data;
+                $.each(data, function (index, item) {
+                    $('#sort_select').append('<option value="' + item.id + '">' + item.name + '</option>');
+                    $('#sort_select_modifyForm').append('<option value="' + item.id + '">' + item.name + '</option>');
+                })
+                form.render();
+            }
+        );
+        // 按下ESC按钮关闭弹层
+        $('body', document).on('keyup', function (e) {
+            //===代表严格相同，不让转型比较
+            if (e.which === 27) {
+                layer.closeAll();
+            }
+        });
+    });
+
+    //显示添加商品名称弹出框
+    function addProductTypeShow() {
+        layui.use(['layer', 'form'], function () {
+            var layer = layui.layer;//获取layer模块
+            var form = layui.form; //获取form模块
+            //弹出窗口
+            layer.open({
+                id: 'addProductType'
+                , type: 1 //Page层类型 1为string，2为frame，content可以填写url
+                , area: ['400px', '250px']
+                , title: '添加商品名称'
+                , shade: 0.6 //遮罩透明度
+                , maxmin: true //允许全屏最小化
+                , anim: 0 //0-6的动画形式，-1不开启
+                , content: $('#addProductType_form')
+            });
+
+            //提交addProductType_form表单
+            form.on('submit(addProductType_form)', function (data) {
+                $.get(
+                    '/backend/productType/add',
+                    {name: data.field.name, sort_id: data.field.sort_id},
+                    function (res) {
+                        if (res.code == 0) {
+                            layer.msg('添加商品名称成功', {time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                );
+                return false;
+            });
+        });
+    }
+
+</script>
+<!-- 商品名称productType的Tab end-->
+
+<!--商品名称表行中的工具条-->
+<script type="text/html" id="productType_tb_rowBar" th:inline="none">
+    <a class="layui-btn layui-btn-xs" lay-event="modify">修改</a>&nbsp;&nbsp;&nbsp;
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>&nbsp;&nbsp;&nbsp;
+    {{#  if(d.status == 1){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="forbidden">禁用</a>
+    {{#  } }}
+    {{#  if(d.status == 0){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="open">启用</a>
+    {{#  } }}
+</script>
+
+<!--商品名称表头中左侧的工具条-->
+<script type="text/html" id="productType_tb_topBar" th:inline="none">
+    <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="batch_del">批量删除</a>
+    <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="batch_status">批量更改状态</a>
+</script>
+
+<!--商品分类sort的Tab Start-->
+<script th:inline="none">
+    //JavaScript代码区域
+    layui.use(['layer', 'form', 'element', 'table'], function () {
+        var layer = layui.layer;//获取layer模块
+        var element = layui.element;//获取element模块
+        var form = layui.form; //获取form模块
+        var table = layui.table;//获取table模块
+
+        //商品分类sort表
+        table.render({
+            elem: '#sort_tb'
+            , width: 700
+            , url: 'http://127.0.0.1:8080/backend/sort/findAll' //数据接口
+            , title: '商品分类表'
+            , cols: [[ //表头
+                {field: 'id', title: 'ID', width: 195, fixed: 'left'}
+                , {field: 'name', title: '分类名', width: 250}
+                , {fixed: 'right', title: '操作', width: 250, align: 'center', toolbar: '#productType_tb_rowBar'}
+            ]]
+        });
+
+        //商品分类sort表行监听,删除修改，启用/禁用
+        table.on('tool(sort_tb_filter)', function (obj) {
+            var data = obj.data; //获取当前行数据
+            var ptevent = obj.event;//获取lay-event对应的值
+            switch (ptevent) {
+                //删除按钮
+                case 'del':
+                    layer.confirm('确定删除吗？', function (index) {
+                        layer.close(index);
+                        // 向服务端发送删除指令
+                        $.get(
+                            '/backend/sort/remove',
+                            {id: data.id},
+                            function (res) {
+                                if (res.code == 0) {
+                                    obj.del(); //删除对应行（tr）的DOM结构
+                                    layer.msg('删除成功', {time: 2000});
+                                } else {
+                                    layer.msg('删除失败', {time: 2000});
+                                }
+                            }
+                        );
+                    });
+                    break;
+                //修改按钮
+                case 'modify':
+                    //弹出窗口
+                    layer.open({
+                        id: 'modifySort'
+                        , type: 1 //Page层类型 1为string，2为frame，content可以填写url
+                        , area: ['400px', '200px']
+                        , title: '修改商品信息'
+                        , shade: 0.6 //遮罩透明度
+                        , maxmin: true //允许全屏最小化
+                        , anim: 0 //0-6的动画形式，-1不开启
+                        , content: $('#modifySort_form')
+                        , success: function () {
+                            $.post(
+                                '/backend/sort/findById',
+                                {'id': data.id},
+                                function (res) {
+                                    if (res.code == 0) {
+                                        $('#modifySortForm_name').val(res.data.name);
+                                    }
+                                }
+                            );
+                        }
+                    });
+                    break;
+            }
+
+            //提交modifySort_form表单
+            form.on('submit(modifySort_form)', function (datas) {
+                $.get(
+                    '/backend/sort/modify',
+                    {id: data.id, name: datas.field.name},
+                    function (res) {
+                        if (res.code == 0) {
+                            layer.msg('修改商品分类成功', {time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                );
+                return false;
+            });
+        });
+        //form表单验证
+        form.verify({
+            name: [
+                /^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$/,
+                '商品分类不能有特殊字符'
+            ]
+        });
+    });
+
+    //显示添加商品名称弹出框
+    function addSortShow() {
+        layui.use(['layer', 'form'], function () {
+            var layer = layui.layer;//获取layer模块
+            var form = layui.form; //获取form模块
+            //弹出窗口
+            layer.open({
+                id: 'addSort'
+                , type: 1 //Page层类型 1为string，2为frame，content可以填写url
+                , area: ['400px', '200px']
+                , title: '添加商品分类'
+                , shade: 0.6 //遮罩透明度
+                , maxmin: true //允许全屏最小化
+                , anim: 0 //0-6的动画形式，-1不开启
+                , content: $('#addSort_form')
+            });
+
+            //提交addSort_form表单
+            form.on('submit(addSort_form)', function (data) {
+                $.get(
+                    '/backend/sort/add',
+                    {name: data.field.name},
+                    function (res) {
+                        if (res.code == 0) {
+                            layer.msg('添加商品分类成功', {time: 1000}, function () {
+                                layer.closeAll();
+                                table.reload('sort_tb', {
+                                    page: {
+                                        curr: 1
+                                    }
+                                });
+                            });
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                );
+                return false;
+            });
+        });
+    }
+</script>
+<!--商品分类sort的Tab end-->
+
+</html>

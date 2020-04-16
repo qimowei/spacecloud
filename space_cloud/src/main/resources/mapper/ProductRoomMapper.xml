@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nuaa.dao.ProductRoomDao">
+
+    <sql id="productRoomColumn">
+        id,
+        country,
+        city,
+        product_type_id
+    </sql>
+
+    <resultMap id="ProductRoomMap" type="ProductRoom">
+        <id property="id" column="id"/>
+        <result property="country" column="country"/>
+        <result property="city" column="city"/>
+        <association property="productType" javaType="ProductType" column="product_type_id">
+            <id property="id" column="pt.id"/>
+            <result property="name" column="pt.name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="ProductRoomMap2" type="ProductRoom">
+        <id property="id" column="id"/>
+        <result property="country" column="country"/>
+        <result property="city" column="city"/>
+        <association property="productType" javaType="ProductType" column="product_type_id">
+            <id property="id" column="product_type_id"/>
+        </association>
+    </resultMap>
+
+    <select id="selectAll" resultMap="ProductRoomMap">
+        SELECT pr.id,pr.country,pr.city,pt.id 'pt.id',pt.name 'pt.name'
+        FROM t_product_room pr
+        LEFT JOIN t_product_type pt ON pr.product_type_id=pt.id
+        <where>
+            <if test="country!=null and country!=''">
+                and pr.country like concat('%',#{country},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" resultMap="ProductRoomMap2">
+        select
+        <include refid="productRoomColumn"/>
+        from
+        t_product_room
+        WHERE
+        id=#{id}
+    </select>
+    <select id="selectByProductTypeId" resultType="cn.nuaa.entity.ProductRoom">
+        SELECT 
+        <include refid="productRoomColumn"/>
+        FROM
+        t_product_room
+        WHERE
+        product_type_id=#{productTypeId}
+    </select>
+
+</mapper>

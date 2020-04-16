@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nuaa.dao.ProductDao">
+
+    <resultMap type="cn.nuaa.entity.Product" id="ProductMap">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="ipAddressId" column="ip_address_id" jdbcType="INTEGER"/>
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="productStatus" column="product_status" jdbcType="INTEGER"/>
+        <result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+        <result property="endDate" column="end_date" jdbcType="TIMESTAMP"/>
+        <result property="dateNum" column="datenum"/>
+        <result property="sortId" column="sort_id" jdbcType="INTEGER"/>
+        <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <association property="ipAddress" javaType="cn.nuaa.entity.IpAddress" column="ip_address_id">
+            <id property="id" column="ia.id"/>
+            <result property="publicIp" column="ia.public_ip"/>
+            <result property="ipLogin" column="ia.ip_login"/>
+            <result property="ipPassword" column="ia.ip_password"/>
+            <result property="ipStatus" column="ia.ip_status"/>
+        </association>
+        <association property="userOrder" javaType="cn.nuaa.entity.UserOrder" column="order_id">
+            <id property="id" column="uo.id"/>
+            <result property="orderStatus" column="uo.order_status"/>
+            <result property="productTypeId" column="uo.product_type_id"/>
+            <result property="productSystemId" column="uo.product_system_id"/>
+            <result property="orderTerm" column="uo.order_term"/>
+        </association>
+        <association property="sort" javaType="cn.nuaa.entity.Sort" column="sort_id">
+            <id property="id" column="s.id"/>
+            <result property="name" column="s.name"/>
+        </association>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ProductMap">
+        select
+          p.id,p.product_status,p.start_date,p.end_date,DATEDIFF(p.end_date,NOW()) 'datenum',p.user_account,p.create_date,
+          ia.id 'ia.id',ia.public_ip 'ia.public_ip',ia.ip_login 'ia.ip_login',ia.ip_password 'ia.ip_password',ia.ip_status 'ia.ip_status',
+          uo.id 'uo.id',uo.order_status 'uo.order_status',uo.product_type_id 'uo.product_type_id',uo.product_system_id 'uo.product_system_id',uo.order_term 'uo.order_term',
+          s.id 's.id',s.name 's.name'
+        from t_product p
+        LEFT JOIN t_ip_address ia ON p.ip_address_id=ia.id
+        LEFT JOIN t_user_order uo ON p.order_id=uo.id
+        LEFT JOIN t_sort s ON p.sort_id=s.id
+        where p.id = #{id}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ProductMap">
+        select
+        p.id,p.product_status,p.start_date,p.end_date,DATEDIFF(p.end_date,NOW()) 'datenum',p.user_account,p.create_date,
+        ia.id 'ia.id',ia.public_ip 'ia.public_ip',ia.ip_login 'ia.ip_login',ia.ip_password 'ia.ip_password',ia.ip_status 'ia.ip_status',
+        uo.id 'uo.id',uo.order_status 'uo.order_status',uo.product_type_id 'uo.product_type_id',uo.product_system_id 'uo.product_system_id',uo.order_term 'uo.order_term',
+        s.id 's.id',s.name 's.name'
+        from t_product p
+        LEFT JOIN t_ip_address ia ON p.ip_address_id=ia.id
+        LEFT JOIN t_user_order uo ON p.order_id=uo.id
+        LEFT JOIN t_sort s ON p.sort_id=s.id
+        <where>
+            <if test="userAccount!=null and userAccount!=''">
+                and p.user_account=#{userAccount}
+            </if>
+            <if test="sortName!=null and sortName!=''">
+                and s.name=#{sortName}
+            </if>
+            <if test="searchDate!=null and searchDate!=''">
+                and date(p.start_date) between '2013-01-01' and #{searchDate}
+            </if>
+        </where>
+        order by p.id desc
+    </select>
+    <select id="queryCountBySortId" resultType="java.lang.Integer">
+        SELECT count(sort_id)
+        FROM t_product
+        WHERE user_account=#{userAccount}
+          and sort_id=#{sortId}
+    </select>
+
+</mapper>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>商品分类</title>
+    <script src="/js/common/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" media="all">
+    <script src="https://www.layuicdn.com/layui-v2.5.6/layui.js" charset="utf-8"></script>
+
+    <!-- 公共的js start-->
+    <script th:inline="none">
+        $(function () {
+
+        });
+    </script>
+    <!-- 公共的js end-->
+</head>
+<body>
+<div class="layui-layout-body" style="margin-left: 20px">
+    <div class="layui-layout layui-layout-admin">
+        <br>
+        <!-- header start-->
+        <div class="layui-main site-inline">
+            <div class="site-content">
+                <blockquote class="layui-elem-quote" style="background-color: #FFFFFF">
+                    <h1 class="site-h1">机房管理<br>
+                        <p></p></h1>
+                </blockquote>
+            </div>
+        </div>
+        <!-- header end-->
+        <!-- 内容主体区域 -->
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">商品的机房</li>
+            </ul>
+
+            <!--tab 标签 start-->
+            <div class="layui-tab-content">
+                <!-- 商品的机房productRoom start-->
+                <div class="layui-tab-item layui-show">
+                    <button type="button" class="layui-btn" onclick="addProductRoomShow()" style="float: left">
+                        <i class="layui-icon">&#xe608;</i> 添加商品的机房
+                    </button>
+                    <!-- 商品的机房搜索框 start-->
+                    <form class="layui-form">
+                        <div class="layui-inline">
+                            <input class="layui-input" name="country" id="searchByCountry" autocomplete="off"
+                                   placeholder="输入国家搜索">
+                        </div>
+                        <button class="layui-btn" lay-submit lay-filter="searchProductRoom_form">搜索</button>
+                    </form>
+                    <!-- 商品的机房搜索框 end-->
+
+                    <!-- 表格 start-->
+                    <table id="productRoom_tb" lay-filter="productRoom_tb_filter"></table>
+                    <!-- 表格 end-->
+                </div>
+                <!-- 商品的机房productRoom end-->
+            </div>
+            <!--tab 标签 end-->
+        </div>
+    </div>
+</div>
+
+<!-- 添加商品的机房弹出框内表单内容 start-->
+<div id="addProductRoom_form" style="display: none;margin: 30px 50px 0px 10px">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+                <select name="product_type_id" id="productType_select" lay-filter="productType_select" lay-verify="required">
+                    <option selected></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">机房国家</label>
+            <div class="layui-input-block">
+                <input type="text" name="country" placeholder="请输入" class="layui-input" lay-verify="required|name">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">机房城市</label>
+            <div class="layui-input-block">
+                <input type="text" name="city" placeholder="请输入" class="layui-input" lay-verify="required|name">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: -20px">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addProductRoom_form">立即添加</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 添加商品的机房弹出框内表单内容 end-->
+
+<!-- 修改商品的机房弹出框内表单内容 start-->
+<div id="modifyProductRoom_form" style="display: none;margin: 30px 50px 0px 10px">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">机房国家</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_country" name="country" placeholder="请输入" class="layui-input" lay-verify="required|name">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">机房城市</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_city" name="city" placeholder="请输入" class="layui-input"
+                       lay-verify="required|name">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: -20px">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="modifyProductRoom_form">立即修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 修改商品的机房弹出框内表单内容 end-->
+</body>
+
+<!-- 商品的机房productRoom的Tab start-->
+<script th:inline="none">
+    //JavaScript代码区域
+    layui.use(['layer', 'form', 'element', 'table'], function () {
+        var layer = layui.layer;//获取layer模块
+        var element = layui.element;//获取element模块
+        var form = layui.form; //获取form模块
+        var table = layui.table;//获取table模块
+
+        //商品的机房productRoom表
+        table.render({
+            elem: '#productRoom_tb'
+            , height: 350
+            , cellMinWidth: 20 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , url: 'http://127.0.0.1:8080/backend/productRoom/findAll'  //数据接口
+            , title: '商品的机房表'
+            , page: true //启用分页
+            , limit: 5 //限制每一页的行数
+            , limits: [5, 10, 15] //表示每一页可显示的行数
+            // , toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            , toolbar: '#productRoom_tb_topBar'
+            , defaultToolbar: ['filter', 'print', 'exports']
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID', width: 100, sort: true, align: 'center'}
+                , {
+                    field: 'productType', title: '商品名称', align: 'center',
+                    templet: function (res) {
+                        return '<span>' + res.productType.name + '</span>'
+                    }
+                }
+                , {field: 'country', title: '机房所在国家', align: 'center'}
+                , {field: 'city', title: '机房所在城市', align: 'center'}
+                , {fixed: 'right', title: '操作', width: 400, align: 'center', toolbar: '#productRoom_tb_rowBar'}
+            ]]
+        });
+
+        //搜索后重载productRoom_tb表格
+        form.on('submit(searchProductRoom_form)', function (data) {
+            table.reload('productRoom_tb', {
+                page: {
+                    curr: 1 //重新回到第一页
+                }
+                , where: {//设定异步数据接口的额外参数
+                    country: data.field.country
+                }
+            });
+            return false;
+        });
+
+        //商品的机房表头批量删除、修改状态监听
+        table.on('toolbar(productRoom_tb_filter)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id)
+                , data = checkStatus.data //获取选中的数据
+                , ids = ''//定义一个元素存在循环出的id的值
+                , names = '';//定义一个数组存放name的值
+            switch (obj.event) {
+                //批量删除
+                case 'batch_del':
+                    if (data.length === 0) {
+                        layer.msg('请至少选择一行');
+                    } else {
+                        for (var i = 0; i < data.length; i++) {
+                            ids += data[i].id + ",";
+                        }
+                        // $.each(data, function (index, value) {
+                        //     names=value.name;
+                        // })
+                        layer.confirm('确定删除这些吗？', function (index) {
+                            parent.layer.msg('删除中...', {icon: 16, shade: 0.3}, function () {
+                                $.post(
+                                    '/backend/productRoom/batchRem',
+                                    {'ids': ids},
+                                    function (data) {
+                                        layer.closeAll('loading');
+                                        if (data.code == 0) {
+                                            parent.layer.msg('删除成功！', {time: 2000, shade: 0.2}, function () {
+                                                location.reload(true);
+                                            });
+                                        } else {
+                                            parent.layer.msg('删除失败！', {icon: 2, time: 3000, shade: 0.2});
+                                        }
+                                    }
+                                );
+                            });
+                        });
+                    }
+                    break;
+            }
+            ;
+        });
+
+        //商品的机房表行监听,删除修改，启用/禁用
+        table.on('tool(productRoom_tb_filter)', function (obj) {
+            var data = obj.data; //获取当前行数据
+            var ptevent = obj.event;//获取lay-event对应的值
+            switch (ptevent) {
+                //删除按钮
+                case 'del':
+                    layer.confirm('确定删除吗？', function (index) {
+                        layer.close(index);
+                        // 向服务端发送删除指令
+                        $.get(
+                            '/backend/productRoom/remove',
+                            {id: data.id},
+                            function (res) {
+                                if (res.code == 0) {
+                                    obj.del(); //删除对应行（tr）的DOM结构
+                                    layer.msg('删除成功', {time: 2000});
+                                } else {
+                                    layer.msg('删除失败', {time: 2000});
+                                }
+                            }
+                        );
+                    });
+                    break;
+                //修改按钮
+                case 'modify':
+                    //弹出窗口
+                    layer.open({
+                        id: 'modifyProductRoom'
+                        , type: 1 //Page层类型 1为string，2为frame，content可以填写url
+                        , area: ['400px', '300px']
+                        , title: '修改商品信息'
+                        , shade: 0.6 //遮罩透明度
+                        , maxmin: true //允许全屏最小化
+                        , anim: 0 //0-6的动画形式，-1不开启
+                        , content: $('#modifyProductRoom_form')
+                        , success: function () {
+                            $.post(
+                                '/backend/productRoom/findById',
+                                {'id': data.id},
+                                function (res) {
+                                    if (res.code == 0) {
+                                        $('#modifyForm_country').val(res.data.country);
+                                        $('#modifyForm_city').val(res.data.city);
+                                    }
+                                }
+                            );
+                        }
+                    });
+                    break;
+            }
+            //提交modifyProductRoom_form表单
+            form.on('submit(modifyProductRoom_form)', function (datas) {
+                $.get(
+                    '/backend/productRoom/modify',
+                    {id: data.id, country: datas.field.country, city: datas.field.city},
+                    function (res) {
+                        if (res.code == 0) {
+                            layer.msg('修改商品成功', {time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                );
+                return false;
+            });
+        })
+
+        //form表单验证
+        form.verify({
+            name: [
+                /^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$/,
+                '商品的机房不能有特殊字符'
+            ]
+        });
+
+        //显示添加商品的机房弹出框界面的分类选项动态生成
+        $.get(
+            '/backend/productType/findAll',
+            {limit:0},
+            function (result) {
+                var data = result.data;
+                $.each(data, function (index, item) {
+                    $('#productType_select').append('<option value="' + item.id + '">' + item.name + '</option>');
+                })
+                form.render();
+            }
+        );
+        // 按下ESC按钮关闭弹层
+        $('body', document).on('keyup', function (e) {
+            //===代表严格相同，不让转型比较
+            if (e.which === 27) {
+                layer.closeAll();
+            }
+        });
+    });
+
+    //显示添加商品的机房弹出框
+    function addProductRoomShow() {
+        layui.use(['layer', 'form'], function () {
+            var layer = layui.layer;//获取layer模块
+            var form = layui.form; //获取form模块
+            //弹出窗口
+            layer.open({
+                id: 'addProductRoom'
+                , type: 1 //Page层类型 1为string，2为frame，content可以填写url
+                , area: ['400px', '400px']
+                , title: '添加商品的机房'
+                , shade: 0.6 //遮罩透明度
+                , maxmin: true //允许全屏最小化
+                , anim: 0 //0-6的动画形式，-1不开启
+                , content: $('#addProductRoom_form')
+            });
+
+            //提交addProductRoom_form表单
+            form.on('submit(addProductRoom_form)', function (data) {
+                $.get(
+                    '/backend/productRoom/add',
+                    {country: data.field.country, city: data.field.city,product_type_id:data.field.product_type_id},
+                    function (res) {
+                        if (res.code == 0) {
+                            layer.msg('添加商品的机房成功', {time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                );
+                return false;
+            });
+        });
+    }
+</script>
+<!-- 商品的机房productRoom的Tab end-->
+
+<!--商品的机房表行中的工具条-->
+<script type="text/html" id="productRoom_tb_rowBar" th:inline="none">
+    <a class="layui-btn layui-btn-xs" lay-event="modify">修改</a>&nbsp;&nbsp;&nbsp;
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>&nbsp;&nbsp;&nbsp;
+</script>
+
+<!--商品的机房表头中左侧的工具条-->
+<script type="text/html" id="productRoom_tb_topBar" th:inline="none">
+    <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="batch_del">批量删除</a>
+</script>
+</html>

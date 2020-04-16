@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>商品分类</title>
+    <script src="/js/common/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" media="all">
+    <script src="https://www.layuicdn.com/layui-v2.5.6/layui.js" charset="utf-8"></script>
+    <!-- 公共的js start-->
+    <script th:inline="none">
+        $(function () {
+
+        });
+    </script>
+    <!-- 公共的js end-->
+</head>
+<body>
+<div class="layui-layout-body" style="margin-left: 20px">
+    <div class="layui-layout layui-layout-admin">
+        <br>
+        <!-- header start-->
+        <div class="layui-main site-inline">
+            <div class="site-content">
+                <blockquote class="layui-elem-quote" style="background-color: #FFFFFF">
+                    <h1 class="site-h1">个人资料<br>
+                        <p></p></h1>
+                </blockquote>
+            </div>
+        </div>
+        <!-- header end-->
+        <!-- 内容主体区域 -->
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">管理员资料</li>
+            </ul>
+
+            <!--tab 标签 start-->
+            <div class="layui-tab-content">
+                <!-- 管理员资料admin start-->
+                <div class="layui-tab-item layui-show">
+                    <!-- 表格 start-->
+                    <table id="admin_tb" lay-filter="admin_tb_filter"></table>
+                    <!-- 表格 end-->
+                </div>
+                <!-- 管理员资料admin end-->
+            </div>
+            <!--tab 标签 end-->
+        </div>
+    </div>
+</div>
+
+<!-- 修改管理员资料弹出框内表单内容 start-->
+<div id="modifyAdminInfo_form" style="display: none;margin: 30px 50px 0px 10px">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyInfoForm_name" name="name" placeholder="请输入" class="layui-input"
+                       lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyInfoForm_phone" name="phone" placeholder="请输入" class="layui-input"
+                       lay-verify="required|phone">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyInfoForm_address" name="address" placeholder="请输入" class="layui-input"
+                       lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyInfoForm_email" name="email" placeholder="请输入" class="layui-input"
+                       lay-verify="required|email">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: -20px">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="modifyAdminInfo_form">立即修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 修改管理员资料弹出框内表单内容 end-->
+
+<!-- 修改管理员密码弹出框内表单内容 start-->
+<div id="modifyAdminPassword_form" style="display: none;margin: 30px 50px 0px 10px">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-block">
+                <input type="password" id="password" name="password" placeholder="请输入新密码" class="layui-input"
+                       lay-verify="required|pass" autocomplete="off">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: -20px">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="modifyAdminPassword_form">立即修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 修改管理员密码弹出框内表单内容 end-->
+
+</body>
+
+<!-- 管理员资料admin的Tab start-->
+<script th:inline="none">
+    //JavaScript代码区域
+    layui.use(['layer', 'form', 'element', 'table'], function () {
+        var layer = layui.layer;//获取layer模块
+        var element = layui.element;//获取element模块
+        var form = layui.form; //获取form模块
+        var table = layui.table;//获取table模块
+
+        //管理员资料admin表
+        table.render({
+            elem: '#admin_tb'
+            , height: 150
+            , cellMinWidth: 20 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , url: 'http://127.0.0.1:8080/backend/admin/findByAdminAccount'  //数据接口
+            , title: '管理员资料表'
+            , page: false //关闭分页
+            , cols: [[
+                {field: 'id', title: 'ID', width: 70, sort: true, align: 'center'}
+                , {field: 'name', title: '昵称', align: 'center'}
+                , {field: 'adminAccount', title: '登录名(不可更改)', align: 'center'}
+                , {field: 'phone', title: '手机号', align: 'center'}
+                , {field: 'address', title: '地址', align: 'center'}
+                , {field: 'email', title: '邮箱'}
+                , {fixed: 'right', title: '操作', width: 250, align: 'center', toolbar: '#admin_tb_rowBar'}
+            ]]
+        });
+
+        //管理员资料表行监听
+        table.on('tool(admin_tb_filter)', function (obj) {
+            var data = obj.data; //获取当前行数据
+            var ptevent = obj.event;//获取lay-event对应的值
+            switch (ptevent) {
+                //修改信息按钮
+                case 'modifyInfo':
+                    //弹出窗口
+                    layer.open({
+                        id: 'modifyAdmin'
+                        , type: 1 //Page层类型 1为string，2为frame，content可以填写url
+                        , area: ['400px', '400px']
+                        , title: '修改管理员信息'
+                        , shade: 0.6 //遮罩透明度
+                        , maxmin: true //允许全屏最小化
+                        , anim: 0 //0-6的动画形式，-1不开启
+                        , content: $('#modifyAdminInfo_form')
+                        , success: function () {
+                            //给表单原始的数据
+                            $('#modifyInfoForm_name').val(data.name);
+                            $('#modifyInfoForm_phone').val(data.phone);
+                            $('#modifyInfoForm_address').val(data.address);
+                            $('#modifyInfoForm_email').val(data.email);
+                        }
+                    });
+                    break;
+                //修改密码按钮
+                case 'modifyPassword':
+                    //弹出窗口
+                    layer.open({
+                        id: 'modifyAdmin'
+                        , type: 1 //Page层类型 1为string，2为frame，content可以填写url
+                        , area: ['400px', '250px']
+                        , title: '修改管理员密码'
+                        , shade: 0.6 //遮罩透明度
+                        , maxmin: true //允许全屏最小化
+                        , anim: 0 //0-6的动画形式，-1不开启
+                        , content: $('#modifyAdminPassword_form')
+                    });
+                    break;
+            }
+            //提交modifyAdminInfo_form表单
+            form.on('submit(modifyAdminInfo_form)', function (datas) {
+                $.get(
+                    '/backend/admin/modify',
+                    {
+                        id: data.id
+                        , name: datas.field.name
+                        , phone: datas.field.phone
+                        , address: datas.field.address
+                        , email: datas.field.email
+                    },
+                    function (res) {
+                        if (res.code == 0) {
+                            layer.msg('修改信息成功', {time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                );
+                return false;
+            });
+
+            //提交modifyAdminPassword_form表单
+            form.on('submit(modifyAdminPassword_form)', function (datas) {
+                $.get(
+                    '/backend/admin/modifyPassword',
+                    {id: data.id, password: datas.field.password},
+                    function (res) {
+                        if (res.code == 0) {
+                            layer.alert('修改密码成功,您的新密码为' + datas.field.password, function (index) {
+                                layer.closeAll();
+                            });
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                );
+                return false;
+            });
+        })
+
+        form.verify({
+            pass: [
+                /^[\S]{6,12}$/
+                , '密码必须6到12位，且不能出现空格'
+            ]
+        });
+
+        // 按下ESC按钮关闭弹层
+        $('body', document).on('keyup', function (e) {
+            //===代表严格相同，不让转型比较
+            if (e.which === 27) {
+                layer.closeAll();
+            }
+        });
+    });
+
+</script>
+<!-- 管理员资料admin的Tab end-->
+
+<!--管理员资料表行中的工具条-->
+<script type="text/html" id="admin_tb_rowBar" th:inline="none">
+    <a class="layui-btn layui-btn-xs" lay-event="modifyInfo">修改信息</a>&nbsp;&nbsp;&nbsp;
+    <a class="layui-btn layui-btn-xs" lay-event="modifyPassword">修改密码</a>&nbsp;&nbsp;&nbsp;
+</script>
+
+</html>

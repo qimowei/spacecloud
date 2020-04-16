@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>商品分类</title>
+    <script src="/js/common/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" media="all">
+    <script src="https://www.layuicdn.com/layui-v2.5.6/layui.js" charset="utf-8"></script>
+
+    <!-- 公共的js start-->
+    <script th:inline="none">
+        $(function () {
+
+        });
+    </script>
+    <!-- 公共的js end-->
+</head>
+<body>
+<div class="layui-layout-body" style="margin-left: 20px">
+    <div class="layui-layout layui-layout-admin">
+        <br>
+        <!-- header start-->
+        <div class="layui-main site-inline">
+            <div class="site-content">
+                <blockquote class="layui-elem-quote" style="background-color: #FFFFFF">
+                    <h1 class="site-h1">参数管理<br>
+                        <p></p></h1>
+                </blockquote>
+            </div>
+        </div>
+        <!-- header end-->
+        <!-- 内容主体区域 -->
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">商品参数</li>
+            </ul>
+
+            <!--tab 标签 start-->
+            <div class="layui-tab-content">
+                <!-- 商品参数productParam start-->
+                <div class="layui-tab-item layui-show">
+                    <button type="button" class="layui-btn" onclick="addProductParamShow()">
+                        <i class="layui-icon">&#xe608;</i> 添加商品参数
+                    </button>
+                    <!-- 表格 start-->
+                    <table id="productParam_tb" lay-filter="productParam_tb_filter"></table>
+                    <!-- 表格 end-->
+                </div>
+                <!-- 商品参数productParam end-->
+            </div>
+            <!--tab 标签 end-->
+        </div>
+    </div>
+</div>
+
+<!-- 添加商品参数弹出框内表单内容 start-->
+<div id="addProductParam_form" style="display: none;margin: 30px 50px 0px 10px">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+                <select name="product_type_id" id="productType_select" lay-filter="productType_select" lay-verify="required">
+                    <option selected></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">CPU型号</label>
+            <div class="layui-input-block">
+                <input type="text" name="cputype" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">CPU核心数</label>
+            <div class="layui-input-block">
+                <input type="text" name="cpu" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">内存大小</label>
+            <div class="layui-input-block">
+                <input type="text" name="ram" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">带宽</label>
+            <div class="layui-input-block">
+                <input type="text" name="bandwidth" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">系统盘大小</label>
+            <div class="layui-input-block">
+                <input type="text" name="sysdisk" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据盘大小</label>
+            <div class="layui-input-block">
+                <input type="text" name="datadisk" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">流量</label>
+            <div class="layui-input-block">
+                <input type="text" name="traffic" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据库大小</label>
+            <div class="layui-input-block">
+                <input type="text" name="sql_size" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: -20px">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addProductParam_form">立即添加</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 添加商品参数弹出框内表单内容 end-->
+
+<!-- 修改商品参数弹出框内表单内容 start-->
+<div id="modifyProductParam_form" style="display: none;margin: 30px 50px 0px 10px">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">CPU型号</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_cputype" name="cputype" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">CPU核心数</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_cpu" name="cpu" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">内存大小</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_ram" name="ram" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">带宽</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_bandwidth" name="bandwidth" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">系统盘大小</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_sysdisk" name="sysdisk" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据盘大小</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_datadisk" name="datadisk" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">流量</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_traffic" name="traffic" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据库大小</label>
+            <div class="layui-input-block">
+                <input type="text" id="modifyForm_sql_size" name="sql_size" placeholder="请输入" class="layui-input" lay-verify="">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: -20px">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="modifyProductParam_form">立即修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 修改商品参数弹出框内表单内容 end-->
+
+</body>
+
+<!-- 商品参数productParam的Tab start-->
+<script th:inline="none">
+    //JavaScript代码区域
+    layui.use(['layer', 'form', 'element', 'table'], function () {
+        var layer = layui.layer;//获取layer模块
+        var element = layui.element;//获取element模块
+        var form = layui.form; //获取form模块
+        var table = layui.table;//获取table模块
+
+        //商品参数productParam表
+        table.render({
+            elem: '#productParam_tb'
+            , height: 350
+            , cellMinWidth: 20 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , url: 'http://127.0.0.1:8080/backend/productParam/findAll'  //数据接口
+            , title: '商品参数表'
+            , page: true //启用分页
+            , limit: 5 //限制每一页的行数
+            , limits: [5, 10, 15] //表示每一页可显示的行数
+            // , toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            , toolbar: '#productParam_tb_topBar'
+            , defaultToolbar: ['filter', 'print', 'exports']
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID', width: 100, align: 'center', hide: true}
+                , {
+                    field: 'productType', title: '商品名称',
+                    templet: function (res) {
+                        return '<span>' + res.productType.name + '</span>'
+                    }
+                }
+                , {field: 'cputype', title: 'cpu型号', heigth: 100}
+                , {field: 'cpu', title: 'cpu核心数/（核）', align: 'center'}
+                , {field: 'ram', title: '内存/（GB）', align: 'center'}
+                , {field: 'bandwidth', title: '带宽/（Mbps）', align: 'center'}
+                , {field: 'sysdisk', title: '系统盘/（GB）', align: 'center'}
+                , {field: 'datadisk', title: '数据盘/（GB）', align: 'center'}
+                , {field: 'traffic', title: '流量/（GB）', align: 'center'}
+                , {field: 'sql_size', title: '数据库大小/（MB）', align: 'center'}
+                , {fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#productParam_tb_rowBar'}
+            ]]
+        });
+
+        //商品参数表头批量删除、修改状态监听
+        table.on('toolbar(productParam_tb_filter)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id)
+                , data = checkStatus.data //获取选中的数据
+                , ids = ''//定义一个元素存在循环出的id的值
+                , names = '';//定义一个数组存放name的值
+            switch (obj.event) {
+                //批量删除
+                case 'batch_del':
+                    if (data.length === 0) {
+                        layer.msg('请至少选择一行');
+                    } else {
+                        for (var i = 0; i < data.length; i++) {
+                            ids += data[i].id + ",";
+                        }
+                        layer.confirm('确定删除这些吗？', function (index) {
+                            parent.layer.msg('删除中...', {icon: 16, shade: 0.3,time:2000}, function () {
+                                $.post(
+                                    '/backend/productParam/batchRem',
+                                    {'ids': ids},
+                                    function (data) {
+                                        layer.closeAll('loading');
+                                        if (data.code == 0) {
+                                            parent.layer.msg('删除成功！', {time: 2000, shade: 0.2}, function () {
+                                                location.reload(true);
+                                            });
+                                        } else {
+                                            parent.layer.msg('删除失败！', {icon: 2, time: 3000, shade: 0.2});
+                                        }
+                                    }
+                                );
+                            });
+                        });
+                    }
+                    break;
+            }
+            ;
+        });
+
+        //商品参数表行监听,删除修改，启用/禁用
+        table.on('tool(productParam_tb_filter)', function (obj) {
+            var data = obj.data; //获取当前行数据
+            var ptevent = obj.event;//获取lay-event对应的值
+            switch (ptevent) {
+                //删除按钮
+                case 'del':
+                    layer.confirm('确定删除吗？', function (index) {
+                        layer.close(index);
+                        // 向服务端发送删除指令
+                        $.get(
+                            '/backend/productParam/remove',
+                            {id: data.id},
+                            function (res) {
+                                if (res.code == 0) {
+                                    obj.del(); //删除对应行（tr）的DOM结构
+                                    layer.msg('删除成功', {time: 2000});
+                                } else {
+                                    layer.msg('删除失败', {time: 2000});
+                                }
+                            }
+                        );
+                    });
+                    break;
+                //修改按钮
+                case 'modify':
+                    //弹出窗口
+                    layer.open({
+                        id: 'modifyProductParam'
+                        , type: 1 //Page层类型 1为string，2为frame，content可以填写url
+                        , area: ['400px', '500px']
+                        , title: '修改商品信息'
+                        , shade: 0.6 //遮罩透明度
+                        , maxmin: true //允许全屏最小化
+                        , anim: 0 //0-6的动画形式，-1不开启
+                        , content: $('#modifyProductParam_form')
+                        , success: function () {
+                            $.get(
+                                '/backend/productParam/findById',
+                                {'id': data.id},
+                                function (res) {
+                                    if (res.code == 0) {
+                                        $('#modifyForm_cputype').val(res.data.cputype);
+                                        $('#modifyForm_cpu').val(res.data.cpu);
+                                        $('#modifyForm_ram').val(res.data.ram);
+                                        $('#modifyForm_bandwidth').val(res.data.bandwidth);
+                                        $('#modifyForm_sysdisk').val(res.data.sysdisk);
+                                        $('#modifyForm_datadisk').val(res.data.datadisk);
+                                        $('#modifyForm_traffic').val(res.data.traffic);
+                                        $('#modifyForm_sql_size').val(res.data.sql_size);
+                                    }
+                                }
+                            );
+                        }
+                    });
+                    break;
+            }
+            //提交modifyProductParam_form表单
+            form.on('submit(modifyProductParam_form)', function (datas) {
+                $.get(
+                    '/backend/productParam/modify',
+                    {
+                        id: data.id
+                        , cputype: datas.field.cputype
+                        , cpu: datas.field.cpu
+                        , ram: datas.field.ram
+                        , bandwidth: datas.field.bandwidth
+                        , sysdisk: datas.field.sysdisk
+                        , datadisk: datas.field.datadisk
+                        , traffic: datas.field.traffic
+                        , sql_size: datas.field.sql_size
+                    },
+                    function (res) {
+                        if (res.code == 0) {
+                            layer.msg('修改商品成功', {time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                )
+                ;
+                return false;
+            });
+        })
+
+        //显示添加商品参数弹出框界面的名称选项动态生成
+        $.get(
+            '/backend/productType/findAll',
+            {limit: 0},
+            function (result) {
+                var data = result.data;
+                $.each(data, function (index, item) {
+                    $('#productType_select').append('<option value="' + item.id + '">' + item.name + '</option>');
+                })
+                form.render();
+            }
+        );
+        // 按下ESC按钮关闭弹层
+        $('body', document).on('keyup', function (e) {
+            //===代表严格相同，不让转型比较
+            if (e.which === 27) {
+                layer.closeAll();
+            }
+        });
+    });
+
+    //显示添加商品参数弹出框
+    function addProductParamShow() {
+        layui.use(['layer', 'form'], function () {
+            var layer = layui.layer;//获取layer模块
+            var form = layui.form; //获取form模块
+            //弹出窗口
+            layer.open({
+                id: 'addProductParam'
+                , type: 1 //Page层类型 1为string，2为frame，content可以填写url
+                , area: ['400px', '500px']
+                , title: '添加商品参数'
+                , shade: 0.6 //遮罩透明度
+                , maxmin: true //允许全屏最小化
+                , anim: 0 //0-6的动画形式，-1不开启
+                , content: $('#addProductParam_form')
+            });
+
+            //提交addProductParam_form表单
+            form.on('submit(addProductParam_form)', function (data) {
+                $.get(
+                    '/backend/productParam/add',
+                    {
+                        cputype: data.field.cputype
+                        , cpu: data.field.cpu
+                        , ram: data.field.ram
+                        , bandwidth: data.field.bandwidth
+                        , sysdisk: data.field.sysdisk
+                        , datadisk: data.field.datadisk
+                        , traffic: data.field.traffic
+                        , sql_size: data.field.sql_size
+                        , product_type_id:data.field.product_type_id
+                    },
+                    function (res) {
+                        if (res.code == 0) {
+                            layer.msg('添加商品参数成功', {time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    }
+                );
+                return false;
+            });
+        });
+    }
+
+</script>
+<!-- 商品参数productParam的Tab end-->
+
+<!--商品参数表行中的工具条-->
+<script type="text/html" id="productParam_tb_rowBar" th:inline="none">
+    <a class="layui-btn layui-btn-xs" lay-event="modify">修改</a>&nbsp;&nbsp;&nbsp;
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<!--商品参数表头中左侧的工具条-->
+<script type="text/html" id="productParam_tb_topBar" th:inline="none">
+    <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="batch_del">批量删除</a>
+</script>
+
+</html>

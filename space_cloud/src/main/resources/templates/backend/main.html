@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>太空云spacevast-后台管理</title>
+    <script src="/js/common/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" media="all">
+    <script src="https://www.layuicdn.com/layui-v2.5.6/layui.js" charset="utf-8"></script>
+
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- header start-->
+    <div class="layui-header">
+        <div class="layui-logo">
+            <a href="#" style="color: #5FB878">
+                <li class="layui-icon layui-icon-console">太空云-后台管理</li>
+            </a>
+        </div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="">
+                    <img src="http://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
+                         class="layui-nav-img">admin
+                </a>
+            </li>
+            <li class="layui-nav-item" onclick="doexit()">&nbsp;&nbsp;
+                <button class="layui-btn" style="background-color: #23262e">退出</button>
+            </li>
+        </ul>
+    </div>
+    <!-- header end-->
+
+    <!-- side侧边 start-->
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <!--侧边伸缩 start-->
+                <li class="layui-nav-item layadmin-flexible" lay-unselect="">
+                    <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                        <i class="layui-icon layui-icon-spread-left" id="LAY_app_flexible"></i>
+                    </a>
+                </li>
+                <!--侧边伸缩 end-->
+                <li class="layui-nav-item layui-nav-itemed layui-this" id="home-set">
+                    <a class="layui-icon layui-icon-home" href="javascript:;">&nbsp;主页</a>
+                </li>
+
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="layui-icon layui-icon-template-1" href="javascript:;">&nbsp;产品管理</a>
+                    <dl class="layui-nav-child">
+                        <dd id="nameManager-set"><a href="javascript:;">名称管理</a></dd>
+                        <dd id="paramManager-set"><a href="javascript:;">参数管理</a></dd>
+                        <dd id="roomManager-set"><a href="javascript:;">机房管理</a></dd>
+                        <dd id="priceManager-set"><a href="javascript:;">价格管理</a></dd>
+                        <dd id="systemManager-set"><a href="javascript:;">系统管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="layui-icon layui-icon-username" href="javascript:;">&nbsp;管理员中心</a>
+                    <dl class="layui-nav-child">
+                        <dd id="adminData-set"><a href="javascript:;">个人资料</a></dd>
+                        <dd id="inviteCode-set"><a href="javascript:;">邀请码</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- side侧边 end-->
+
+    <!-- 主体 start-->
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <iframe id="frame-id" src="/backend/home" width="100%" height="100%" frameborder="0" scrolling="no">
+        </iframe>
+    </div>
+    <!-- 主体 end-->
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © www.spacevast.com - 太空云版权所有
+    </div>
+</div>
+</body>
+
+<script th:inline="none">
+    //JavaScript代码区域
+    layui.use(['layer', 'form', 'element'], function () {
+        var layer = layui.layer;//获取layer模块
+        var element = layui.element;//获取element模块
+        var form = layui.form; //获取form模块
+    });
+    var isShow = true;  //定义一个标志位
+    $('#LAY_app_flexible').click(function () {
+        //选择出所有的span，并判断是不是hidden
+        $('.layui-nav-item span').each(function () {
+            if ($(this).is(':hidden')) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        //判断isshow的状态
+        if (isShow) {
+            $('.layui-side.layui-bg-black').width(60); //设置宽度
+            $('.kit-side-fold i').css('margin-right', '70%');  //修改图标的位置
+            //将footer和body的宽度修改
+            $('.layui-body').css('left', 60 + 'px');
+            $('.layui-footer').css('left', 60 + 'px');
+            //将二级导航栏隐藏
+            $('dd span').each(function () {
+                $(this).hide();
+            });
+            //修改标志位
+            isShow = false;
+        } else {
+            $('.layui-side.layui-bg-black').width(200);
+            $('.kit-side-fold i').css('margin-right', '10%');
+            $('.layui-body').css('left', 200 + 'px');
+            $('.layui-footer').css('left', 200 + 'px');
+            $('dd span').each(function () {
+                $(this).show();
+            });
+            isShow = true;
+        }
+    });
+
+</script>
+<script type="text/javascript">
+    $(function () {
+        // 点击切换页面
+        $("#home-set").click(function () {
+            $("#frame-id").attr("src", "/backend/home");
+        });
+        $("#nameManager-set").click(function () {
+            $("#frame-id").attr("src", "/backend/nameManager/show");
+        });
+        $("#paramManager-set").click(function () {
+            $("#frame-id").attr("src", "/backend/paramManager/show");
+        });
+        $("#roomManager-set").click(function () {
+            $("#frame-id").attr("src", "/backend/roomManager/show");
+        });
+        $("#priceManager-set").click(function () {
+            $("#frame-id").attr("src", "/backend/priceManager/show");
+        });
+        $("#systemManager-set").click(function () {
+            $("#frame-id").attr("src", "/backend/systemManager/show");
+        });
+        $("#adminData-set").click(function () {
+            $("#frame-id").attr("src", "/backend/adminData/show");
+        });
+        $("#inviteCode-set").click(function () {
+            $("#frame-id").attr("src", "/backend/inviteCode/show");
+        });
+        $("#basicData-set").click(function () {
+            $("#frame-id").attr("src", "/backend/adminData/show");
+        });
+    });
+
+    function doexit() {
+        $.get(
+            '/index.html',
+            function (result) {
+                if (true) {
+                    layui.layer.msg('退出成功', {
+                        time: 1000,
+                    }, function () {
+                        location.href = '/index.html';
+                    })
+                }
+            }
+        );
+    };
+</script>
+</html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nuaa.dao.UserOrderDao">
+
+    <resultMap type="cn.nuaa.entity.UserOrder" id="UserOrderMap">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
+        <result property="productSystemId" column="product_system_id" jdbcType="INTEGER"/>
+        <result property="orderDate" column="order_date" jdbcType="TIMESTAMP"/>
+        <result property="orderPrice" column="order_price" jdbcType="NUMERIC"/>
+        <result property="orderTerm" column="order_term" jdbcType="INTEGER"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <association property="productType" javaType="cn.nuaa.entity.ProductType" column="product_type_id">
+            <id property="id" column="pt.id"/>
+            <result property="name" column="pt.name"/>
+        </association>
+        <association property="productSystem" javaType="cn.nuaa.entity.ProductSystem" column="product_system_id">
+            <id property="id" column="ps.id"/>
+            <result property="sysType" column="ps.sys_type"/>
+            <result property="sysVersion" column="ps.sys_version"/>
+        </association>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserOrderMap">
+        select
+          uo.id, uo.order_status, uo.order_date, uo.order_price, uo.order_term, uo.remark, uo.user_account,uo.create_date,
+          pt.id 'pt.id',pt.name 'pt.name',
+          ps.id 'ps.id',ps.sys_type 'ps.sys_type',ps.sys_version 'ps.sys_version'
+        from t_user_order uo
+        LEFT JOIN t_product_type pt ON uo.product_type_id=pt.id
+        LEFT JOIN t_product_system ps ON uo.product_system_id=ps.id
+        where uo.id = #{id}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserOrderMap">
+        select
+          uo.id, uo.order_status, uo.order_date, uo.order_price, uo.order_term, uo.remark, uo.user_account,uo.create_date,
+        pt.id'pt.id',pt.name 'pt.name',
+        ps.id 'ps.id',ps.sys_type 'ps.sys_type',ps.sys_version 'ps.sys_version'
+        from t_user_order uo
+        LEFT JOIN t_product_type pt ON uo.product_type_id=pt.id
+        LEFT JOIN t_product_system ps ON uo.product_system_id=ps.id
+        <where>
+            <if test="userAccount!=null and userAccount!=''">
+                and uo.user_account=#{userAccount}
+            </if>
+            <if test="name!=null and name!=''">
+                and pt.name like concat('%',#{name},'%')
+            </if>
+        </where>
+        ORDER BY uo.create_date DESC
+    </select>
+
+</mapper>

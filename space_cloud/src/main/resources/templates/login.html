@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>登录Login</title>
+    <link rel="stylesheet" type="text/css" href="/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
+    <script src="/js/common/jquery-3.4.1.min.js"></script>
+    <script src="/js/login.js"></script>
+</head>
+<body>
+<div id="header">
+    <div class="my-col clearfloat">
+        <h1 class="logo clearfloat">
+            <a href="/index.html">太空云</a>
+        </h1>
+        <h2 class="title">登录</h2>
+        <ul class="nav clearfloat">
+            <li class="nav-first"><a href="/index.html">太空云首页</a></li>
+            <li><a href="#">帮助与文档</a></li>
+        </ul>
+    </div>
+</div>
+<div id="content">
+    <div class="my-col">
+        <div class="banner">
+            <div class="wrapper">
+                <div class="unslider">
+                    <div class="slider">
+                        <ul class="slider-ul">
+                            <li style="display:block;" index="0"><img src="/images/login/banner01.jpg" alt=""></li>
+                            <li style="display:none;" index="1"><img src="/images/login/banner02.jpg" alt=""></li>
+                            <li style="display:none;" index="2"><img src="/images/login/banner03.jpg" alt=""></li>
+                        </ul>
+                    </div>
+                    <div class="slider-btn">
+                        <ul>
+                            <li class="active" index="0">1</li>
+                            <li index="1">2</li>
+                            <li index="2">3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="login-module">
+            <div class="login-box">
+                <div class="static-login mystatic">
+                    <form action="">
+                        <div class="login-content">
+                            <dl>
+                                <dt class="fm-label clearfloat">
+                                    <label for="fm-login-id">登录名：</label>
+                                </dt>
+                                <dd class="fm-field">
+                                    <div class="fm-field-wrap clearfloat">
+                                        <input type="text" id="fm-login-id" name="username" class="fm-text" placeholder="邮箱/会员名/8位ID">
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt class="fm-label clearfloat">
+                                    <span><a href="#">忘记登录密码？</a></span>
+                                    <label for="fm-login-pwd">登录密码：</label>
+                                </dt>
+                                <dd class="fm-field">
+                                    <div class="fm-field-wrap clearfloat">
+                                        <input type="password" name="password" id="fm-login-pwd" class="fm-text" placeholder="登录密码">
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="login-button">
+                            <input type="submit" id="submit" value="登录">
+                        </div>
+                        <div class="login-other">
+                            <div class="login-links">
+                                <a href="#">原支付宝快捷登录<img src="/images/login/alipay.gif" alt=""></a>
+                                <br>
+                                <span>原微博登录</span>
+                                <a href="#">
+                                    <img src="/images/login/wblog.png" alt="原微博登录">
+                                </a>
+                                <br>
+                                <br>
+                            </div>
+                            <div class="register"><a href="/register">免费注册</a></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="agreement">
+                <input type="checkbox" checked class="checkbox"/>
+                <span>我同意并已阅读</span>
+                <a href="#">《阿里云网站服务协议》</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="footer">
+    <div class="main-know">
+        <div class="my-col clearfloat">
+            <div class="left-icon"><img src="/images/login/phone.gif" alt=""></div>
+            <div class="right-text">
+                <div class="left">
+                    <p class="title">售前咨询</p>
+                    <p class="desc">95187转1</p>
+                </div>
+                <div class="right clearfloat">
+                    <p class="list"><a href="#" class="tran">全方位的购买咨询</a></p>
+                    <p class="list"><a href="#" class="tran">精准的配置推荐</a></p>
+                    <p class="list"><a href="#" class="tran">灵活的价格方案</a></p>
+                    <p class="list"><a href="#" class="tran">1对1贴心服务</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        <div class="my-col">
+            <p class="big">
+                <span><a href="#">关于我们</a></span>
+                <span><a href="#">法律声明</a></span>
+                <span><a href="#">友情链接</a></span>
+            </p>
+            <p>
+                <span><a href="#">阿里巴巴集团</a></span>
+                <span><a href="#">阿里巴巴国际站</a></span>
+                <span><a href="#">阿里巴巴中文站</a></span>
+                <span><a href="#">全球速卖通</a></span>
+                <span><a href="#">淘宝网</a></span>
+                <span><a href="#">天猫</a></span>
+                <span><a href="#">聚划算</a></span>
+                <span><a href="#">一淘</a></span>
+                <span><a href="#">阿里妈妈</a></span>
+                <span><a href="#">阿里云</a></span>
+                <span><a href="#">云OS</a></span>
+                <span><a href="#">万网</a></span>
+                <span><a href="#">支付宝</a></span>
+                <span><a href="#">来往</a></span>
+            </p>
+            <p>© 2015 Aliyun.com 版权所有 ICP证：浙B2-20080101</p>
+            <p>
+                <a href="#" class="img img1"></a>
+                <a href="#" class="img img2"></a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

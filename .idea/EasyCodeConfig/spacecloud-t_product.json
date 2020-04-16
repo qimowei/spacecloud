@@ -1,0 +1,82 @@
+{
+  "name" : "TProduct",
+  "comment" : null,
+  "fullColumn" : [ {
+    "name" : "id",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "ipAddressId",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "orderId",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "startDate",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "sortId",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "userAccount",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "createDate",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "ipAddress",
+    "comment" : "IpAddress的实例化",
+    "type" : "cn.nuaa.entity.IpAddress",
+    "shortType" : null,
+    "custom" : true,
+    "ext" : { }
+  }, {
+    "name" : "order",
+    "comment" : "Order的实例化",
+    "type" : "cn.nuaa.entity.Order",
+    "shortType" : null,
+    "custom" : true,
+    "ext" : { }
+  }, {
+    "name" : "sort",
+    "comment" : "sort的实例化",
+    "type" : "cn.nuaa.entity.Sort",
+    "shortType" : null,
+    "custom" : true,
+    "ext" : {
+      "disable" : false
+    }
+  } ],
+  "pkColumn" : null,
+  "otherColumn" : null,
+  "savePackageName" : "cn.nuaa",
+  "savePath" : "./space_cloud/src/main/java/cn/nuaa",
+  "saveModelName" : "space_cloud"
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nuaa.dao.AdminDao">
+    <sql id="adminColumn">
+        id,
+        name,
+        admin_account,
+        password,
+        phone,
+        address,
+        email,
+        create_date
+    </sql>
+
+    <select id="selectByAdminAccount" resultType="Admin">
+        SELECT <include refid="adminColumn"/>
+        FROM t_admin
+        WHERE admin_account=#{adminAccount}
+    </select>
+
+</mapper>

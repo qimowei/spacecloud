@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nuaa.dao.UserDao">
+    <sql id="userColumn">
+        id,
+        name,
+        user_account,
+        password,
+        identity,
+        qq_num,
+        phone,
+        email,
+        city,
+        address,
+        sex,
+        signature,
+        create_date,
+        balance,
+        all_pay,
+        endpay_date
+    </sql>
+
+    <select id="selectByUserAccount" resultType="cn.nuaa.entity.User">
+        SELECT
+        <include refid="userColumn"/>
+        FROM t_user
+        WHERE user_account=#{userAccount}
+    </select>
+
+    <update id="updateBalanceByUserAccount">
+        UPDATE t_user
+        <set>
+            <if test="balance != null and balance!=''">balance = #{balance},</if>
+            <if test="allPay != null and allPay!=''">all_pay = #{allPay},</if>
+            <if test="endpayDate != null">endpay_date=#{endpayDate},</if>
+        </set>
+        where user_account=#{userAccount}
+    </update>
+</mapper>

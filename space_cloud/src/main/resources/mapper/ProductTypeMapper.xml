@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nuaa.dao.ProductTypeDao">
+
+    <sql id="productTypeColumn">
+        id,
+        name,
+        status,
+        sort_id
+    </sql>
+    <resultMap id="productTypeMap" type="cn.nuaa.entity.ProductType">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="status" column="status"/>
+        <association property="sort" javaType="cn.nuaa.entity.Sort" column="sort_id">
+            <id property="id" column="s.id"/>
+            <result property="name" column="s.name"/>
+        </association>
+    </resultMap>
+    <resultMap id="productTypeMap2" type="cn.nuaa.entity.ProductType">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="status" column="status"/>
+        <association property="sort" javaType="cn.nuaa.entity.Sort" column="sort_id">
+            <id property="id" column="sort_id"/>
+        </association>
+    </resultMap>
+    <resultMap id="productTypeMap3" type="cn.nuaa.entity.ProductType">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="status" column="status"/>
+        <association property="sort" javaType="cn.nuaa.entity.Sort" column="sort_id">
+            <id property="id" column="s.id"/>
+            <result property="name" column="s.name"/>
+        </association>
+        <association property="productPrice" javaType="cn.nuaa.entity.ProductPrice">
+            <id property="id" column="ppr.id"/>
+            <result property="price" column="ppr.price"/>
+        </association>
+        <association property="productRoom" javaType="cn.nuaa.entity.ProductRoom">
+            <id property="id" column="pr.id"/>
+            <result property="country" column="pr.country"/>
+            <result property="city" column="pr.city"/>
+        </association>
+        <association property="productParam" javaType="cn.nuaa.entity.ProductParam">
+            <id property="id" column="pp.id"/>
+            <result property="cputype" column="pp.cputype"/>
+            <result property="cpu" column="pp.cpu"/>
+            <result property="ram" column="pp.ram"/>
+            <result property="bandwidth" column="pp.bandwidth"/>
+            <result property="sysdisk" column="pp.sysdisk"/>
+            <result property="datadisk" column="pp.datadisk"/>
+            <result property="traffic" column="pp.traffic"/>
+            <result property="sql_size" column="pp.sql_size"/>
+        </association>
+    </resultMap>
+
+    <select id="selectAllFrontShow" resultMap="productTypeMap3">
+         SELECT pt.id,pt.name,pt.status,
+            s.id 's.id',s.name 's.name',
+            ppr.id 'ppr.id',ppr.price 'ppr.price',
+            pr.id 'pr.id',pr.country 'pr.country',pr.city 'pr.city',
+            pp.id 'pp.id',pp.cputype 'pp.cputype',pp.cpu 'pp.cpu',pp.ram 'pp.ram',
+            pp.bandwidth 'pp.bandwidth',pp.sysdisk 'pp.sysdisk',
+            pp.datadisk 'pp.datadisk',pp.traffic 'pp.traffic',pp.sql_size 'pp.sql_size'
+         FROM t_product_type pt
+         LEFT JOIN t_sort s ON pt.sort_id=s.id
+         LEFT JOIN t_product_price ppr ON pt.id=ppr.product_type_id
+         LEFT JOIN t_product_room pr ON pt.id=pr.product_type_id
+         LEFT JOIN t_product_param pp ON pt.id=pp.product_type_id
+         <where>
+             <if test="sortName!=null and sortName!=''">
+                 and s.name=#{sortName}
+             </if>
+         </where>
+    </select>
+
+    <select id="selectAll" resultMap="productTypeMap">
+        SELECT pt.id,pt.name,pt.status,pt.sort_id,s.id 's.id',s.name 's.name'
+        FROM t_product_type pt
+        LEFT JOIN t_sort s ON pt.sort_id=s.id
+        <where>
+            <if test="name!=null and name!=''">
+                and pt.name like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByName" resultMap="productTypeMap2">
+        select
+        <include refid="productTypeColumn"/>
+        from
+        t_product_type
+        WHERE
+        name=#{name}
+    </select>
+    <select id="selectById" resultMap="productTypeMap2">
+        select
+        <include refid="productTypeColumn"/>
+        from
+        t_product_type
+        WHERE
+        id=#{id}
+    </select>
+    <select id="selectBySortId" resultMap="productTypeMap2">
+        select
+        <include refid="productTypeColumn"/>
+        from
+        t_product_type
+        WHERE
+        sort_id=#{sortId}
+    </select>
+    <update id="updateStatusById">
+        UPDATE t_product_type
+        SET status=#{status}
+        where id=#{id}
+    </update>
+
+</mapper>
